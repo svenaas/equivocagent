@@ -1,5 +1,8 @@
 require 'twitter'
 
+# Assume client is run once per hour, but we only want ~6 tweets per day
+CHANCE_OF_TWEETING = 0.25
+
 client = Twitter::REST::Client.new do |config|
   config.consumer_key        = ENV["CONSUMER_KEY"]
   config.consumer_secret     = ENV["CONSUMER_SECRET"]
@@ -20,9 +23,11 @@ codephrase = "The #{nouns.sample} is #{prepositions.sample} the #{nouns.sample}.
 if ARGV.size > 0
   puts codephrase
 else
-	begin
-	  client.update codephrase
-	rescue Exception => e
-	  puts "An exception occured: #{e}"
+	if rand < CHANCE_OF_TWEETING
+		begin
+		  client.update codephrase
+		rescue Exception => e
+		  puts "An exception occured: #{e}"
+		end
 	end
 end
