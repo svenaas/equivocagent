@@ -17,8 +17,12 @@ prepositions = %w{on in at under beside astride below above within near}
 
 codephrase = "The #{nouns.sample} is #{prepositions.sample} the #{nouns.sample}."
 
-begin
-  client.update codephrase
-rescue Exception => e
-  puts "An exception occured: #{e}"
+if ARGV.size > 0
+  puts codephrase
+else
+	begin
+	  client.update codephrase
+	rescue Exception => e
+	  puts "An exception occured: #{e}"
+	end
 end
