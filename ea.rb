@@ -1,7 +1,7 @@
 require 'twitter'
 
-# Assume client is run once per hour but we only want ~6 tweets per day
-CHANCE_OF_TWEETING = 0.25
+# Assume client is run once every ten minutes but we only want ~6 tweets per day
+CHANCE_OF_TWEETING = 0.042
 
 @client = Twitter::REST::Client.new do |config|
   config.consumer_key        = ENV["CONSUMER_KEY"]
