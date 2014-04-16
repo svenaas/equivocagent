@@ -132,10 +132,12 @@ end
 def react_to_new_mentions
 	mentions.reverse.each do |m|
 		# Reply to mention unless this has already been done
-		tweet_codephrase(m) unless replied_to?(m)
+		unless replied_to?(m)
+      tweet_codephrase(m) 
+      sleep(rand(5...15))
+    end
 		# Try and follow mentioner
 		@client.follow(m.user)
-    sleep(rand(5...15))
 	end
 end
 
