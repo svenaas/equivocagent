@@ -177,6 +177,7 @@ end
 def usage 
 	puts "Usage:"
 	puts "  ea.rb run        - normal execution      (may post to Twitter)"
+  puts "  ea.rb tweet      - tweet codephrase      (will post to Twitter)"
 	puts "  ea.rb react      - react to new mentions (may post to Twitter)"
 	puts "  ea.rb codephrase - generate a random codephrase"
 	puts "  ea.rb location   - generate a random location"
@@ -188,6 +189,8 @@ if ARGV.size != 1
 	usage
 elsif ARGV[0] == 'run'
 	run
+elsif ARGV[0] == 'tweet'
+  tweet_codephrase
 elsif ARGV[0] == 'react'
 	react_to_new_mentions
 elsif ARGV[0] == 'codephrase'
