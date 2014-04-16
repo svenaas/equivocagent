@@ -23,11 +23,16 @@ end
 @adverbs = %w{accidentally afterwards almost always angrily annually anxiously awkwardly badly blindly boastfully boldly bravely briefly brightly busily calmly carefully carelessly cautiously cheerfully clearly correctly courageously crossly cruelly daily defiantly deliberately doubtfully easily elegantly enormously enthusiastically equally even eventually exactly faithfully far fast fatally fiercely fondly foolishly fortunately frantically gently  gladly gracefully greedily happily hastily honestly hourly hungrily innocently inquisitively irritably joyously justly kindly lazily less loosely loudly madly merrily monthly mortally mysteriously nearly neatly nervously never noisily obediently obnoxiously often only painfully perfectly politely poorly powerfully promptly punctually quickly quietly rapidly rarely really recklessly regularly reluctantly repeatedly rightfully roughly rudely sadly safely seldom selfishly seriously shakily sharply shrilly shyly silently sleepily slowly smoothly softly solemnly sometimes soon speedily stealthily sternly successfully suddenly suspiciously swiftly tenderly tensely thoughtfully tightly tomorrow truthfully unexpectedly victoriously violently vivaciously warmly weakly wearily well wildly yearly}
 @adverbs += ['at midnight', 'willfully', 'indignantly', 'forever', 'weekly', 'at dawn', 'at once', 'tonight']
 
-@transitive_verbs = %w{brings costs gives lends offers passes plays reads sends sings teaches writes buys gets leaves makes owes pays promises refuses shows takes tells}
+@transitive_verbs = %w{brings gives lends offers passes plays reads sends sings teaches writes buys gets leaves makes owes pays promises refuses shows takes tells}
 
-@intransitive_verbs = %w{agrees appears arrives becomes belongs collapses collides consists costs depends dies disappears emerges exists falls goes happens knocks laughs lies lives looks lasts occurs remains responds rises sits sleeps stands stays swims vanishes waitsß}
+@transitive_verbs_past_participle = %w{brought given leant offered passed played read sent sung taught written bought gotten left made owed paid promised refused shown taken told}
+
+@intransitive_verbs = %w{agrees appears arrives becomes belongs collapses collides consists costs depends dies disappears emerges exists falls goes happens knocks laughs lies lives looks lasts occurs remains responds rises sits sleeps stands stays swims vanishes waits}
 
 @adjectives = %w{able acid angry automatic beautiful black boiling bright broken brown cheap chemical chief clean clear common complex conscious cut deep dependent early elastic electric equal fat fertile first fixed flat free frequent full general good great grey hanging happy hard healthy high hollow important kind like living long male married material medical military natural necessary new normal open parallel past physical political poor possible present private probable quick quiet ready red regular responsible right round same second separate serious sharp smooth sticky stiff straight strong sudden sweet tall thick tight tired true violent waiting warm wet wide wise yellow young}
+@adjectives += %w{wax stone slippery pious honorable despicable}
+
+@passive_modifiers = ['will be', 'has been', 'is', 'was', 'may have', 'could have', 'often']
 
 def adverb
   @adverbs.sample
@@ -49,8 +54,16 @@ def noun
   result
 end
 
-def intansitive_verbs
-  verbs = @intransitive_verbs.sample
+def intransitive_verb
+  @intransitive_verbs.sample
+end
+
+def transitive_verb_past_participle
+  result = @transitive_verbs_past_participle.sample
+  if rand < 0.25
+    result = adverb + ' ' + result
+  end
+  result
 end
 
 def codephrase
@@ -58,10 +71,12 @@ def codephrase
 	# The NOUN is PREOPOSITION the NOUN.
 	codephrases << "The #{noun} is #{@prepositions.sample} the #{noun}."
 	# The NOUN has VERBED the NOUN.
+  codephrases << "The #{noun} has #{transitive_verb_past_participle} the #{noun}."
 	# The NOUN [has been|is|will be] VERBED.
+  codephrases << "The #{noun} #{@passive_modifiers.sample} the #{transitive_verb_past_participle}."
 	# The NOUN VERBS at TIME.
 	# The NOUN VERBS ADVERB.
-	codephrases << "The #{noun} #{intansitive_verbs} #{adverb}."
+	codephrases << "The #{noun} #{intransitive_verb} #{adverb}."
 	# In PLACE there is a NOUN that VERBS.
 	# How is a NOUN like a NOUN? <— problem: article inflection (a/n)
 
