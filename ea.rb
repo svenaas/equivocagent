@@ -15,15 +15,34 @@ end
 def codephrase
 	# Picturable words from http://en.wiktionary.org/wiki/Appendix:Basic_English_word_list
 	nouns = %w{angle ant apple arch arm army baby bag ball band basin basket bath bed bee bell berry bird blade board boat bone book boot bottle box boy brain brake branch brick bridge brush bucket bulb button cake camera card cart carriage cat chain cheese chest chin church circle clock cloud coat collar comb cord cow cup curtain cushion dog door drain drawer dress drop ear egg engine eye face farm feather finger fish flag floor fly foot fork fowl frame garden girl glove goat gun hair hammer hand hat head heart hook horn horse hospital house island jewel kettle key knee knife knot leaf leg library line lip lock map match monkey moon mouth muscle nail neck needle nerve net nose nut office orange oven parcel pen pencil picture pig pin pipe plane plate plough pocket pot potato prison pump rail rat receipt ring rod roof root sail school scissors screw seed sheep shelf ship shirt shoe skin skirt snake sock spade sponge spoon spring square stamp star station stem stick stocking stomach store street sun table tail thread throat thumb ticket toe tongue tooth town train tray tree trousers umbrella wall watch wheel whip whistle window wing wire worm}
-
 	# More fun
-	nouns += %w{eagle mouse tentacle albatross puppet sofa racket Pope tonsil spork notion planet}
+	nouns += %w{eagle mouse tentacle albatross puppet sofa racket Pope tonsil spork notion planet tadpole}
 
-	prepositions = %w{on in at under beside astride below above within near}
+	prepositions = %w{on in at under beside astride below above within near aboard beyond behind following underneath within upon unlike past}
 
-	codephrase = "The #{nouns.sample} is #{prepositions.sample} the #{nouns.sample}."
+	# Common adverbs from http://www.gtchild.co.uk/content/index.php?option=com_content&task=view&id=280&Itemid=70
+	adverbs = %w{accidentally afterwards almost always angrily annually anxiously awkwardly badly blindly boastfully boldly bravely briefly brightly busily calmly carefully carelessly cautiously cheerfully clearly correctly courageously crossly cruelly daily defiantly deliberately doubtfully easily elegantly enormously enthusiastically equally even eventually exactly faithfully far fast fatally fiercely fondly foolishly fortunately frantically gently	gladly gracefully greedily happily hastily honestly hourly hungrily innocently inquisitively irritably joyously justly kindly lazily less loosely loudly madly merrily monthly mortally mysteriously nearly neatly nervously never noisily obediently obnoxiously often only painfully perfectly politely poorly powerfully promptly punctually quickly quietly rapidly rarely really recklessly regularly reluctantly repeatedly rightfully roughly rudely sadly safely seldom selfishly seriously shakily sharply shrilly shyly silently sleepily slowly smoothly softly solemnly sometimes soon speedily stealthily sternly successfully suddenly suspiciously swiftly tenderly tensely thoughtfully tightly tomorrow truthfully unexpectedly very victoriously violently vivaciously warmly weakly wearily well wildly yearly yesterday}
 
-	return codephrase
+	transitive_verbs = %w{brings costs gives lends offers passes plays reads sends sings teaches writes buys gets leaves makes owes pays promises refuses shows takes tells}
+
+	questions_to_be = ['How is', 'When is', 'Is']
+
+	codephrases = []
+	# The NOUN is PREOPOSITION the NOUN.
+	codephrases << "The #{nouns.sample} is #{prepositions.sample} the #{nouns.sample}."
+	# The NOUN has VERBED the NOUN.
+	# The NOUN [has been|is|will be] VERBED.
+	# The NOUN VERBS at TIME.
+	# The NOUN VERBS ADVERB.
+	codephrases << "The #{nouns.sample} #{transitive_verbs.sample} #{adverbs.sample}."
+	# In PLACE there is a NOUN that VERBS.
+	# How is a NOUN like a NOUN?
+	codephrases << "#{questions_to_be.sample} a #{nouns.sample} like a #{nouns.sample}?"
+
+	# CODEPHRASE, I repeat, CODEPHRASE
+	#if rand < 0.01 ...
+
+	return codephrases.sample
 end
 
 def location
