@@ -135,6 +135,7 @@ def react_to_new_mentions
 		tweet_codephrase(m) unless replied_to?(m)
 		# Try and follow mentioner
 		@client.follow(m.user)
+    sleep(rand(5...15))
 	end
 end
 
