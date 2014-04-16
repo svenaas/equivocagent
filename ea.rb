@@ -141,8 +141,9 @@ def tweet_codephrase(in_reply_to = nil)
 	end
 
 	begin
-	  @client.update status options
+	  @client.update status, options
 	  @tweets_sent += 1
+    puts "Tweeted: #{status}"
 	rescue Exception => e
 	  puts "An exception occured: #{e}"
 	end
