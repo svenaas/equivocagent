@@ -73,7 +73,7 @@ def codephrase
 	# The NOUN has VERBED the NOUN.
   codephrases << "The #{noun} has #{transitive_verb_past_participle} the #{noun}."
 	# The NOUN [has been|is|will be] VERBED.
-  codephrases << "The #{noun} #{@passive_modifiers.sample} the #{transitive_verb_past_participle}."
+  codephrases << "The #{noun} #{@passive_modifiers.sample} #{transitive_verb_past_participle}."
 	# The NOUN VERBS at TIME.
 	# The NOUN VERBS ADVERB.
 	codephrases << "The #{noun} #{intransitive_verb} #{adverb}."
