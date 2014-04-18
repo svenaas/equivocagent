@@ -119,20 +119,18 @@ def location
 	location
 end
 
-# Get the 20 newest followers
-def followers
-  @client.followers.take(20)
-end
-
-# Get the 20 most recent mentions
+# Get the 20 most recent mentions, ordered from newest to oldest
 def mentions
-	@client.mentions_timeline
+  @client.mentions_timeline
 end
 
 def react_to_new_mentions
-	mentions.reverse.each do |m|
+  new_mentions = mentions
+  # Get all my tweets since the oldest mention
+  my_tweets ||= @client.user_timeline(:since_id => new_mentions.last.id)
+	new_mentions.each do |m|
 		# Reply to mention unless this has already been done
-		unless replied_to?(m)
+		unless replied_to?(m, my_tweets)
       tweet_codephrase(m) 
       sleep(rand(5...15))
     end
@@ -141,9 +139,20 @@ def react_to_new_mentions
 	end
 end
 
-def replied_to?(tweet)
-	tweets = @client.user_timeline(:since_id => tweet.id)
-	tweets.each do |t|
+# Get the 20 newest followers, ordered from newest to oldest
+def followers
+  @client.followers.take(20)
+end
+
+def react_to_new_followers
+  followers.reverse.each do |f|
+    # Try and follow follower
+    @client.follow(f)
+  end
+end
+
+def replied_to?(tweet, my_tweets)	
+	my_tweets.each do |t|
 		return true if t.in_reply_to_status_id == tweet.id
 	end
 	return false
@@ -169,6 +178,7 @@ end
 
 def run
 	react_to_new_mentions
+  react_to_new_followers
 	if @tweets_sent == 0 and rand < CHANCE_OF_TWEETING
 	  tweet_codephrase
 	end
