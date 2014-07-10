@@ -23,6 +23,9 @@ end
 @adverbs = %w{accidentally afterwards almost always angrily annually anxiously awkwardly badly blindly boastfully boldly bravely briefly brightly busily calmly carefully carelessly cautiously cheerfully clearly correctly courageously crossly cruelly daily defiantly deliberately doubtfully easily elegantly enormously enthusiastically equally even eventually exactly faithfully far fast fatally fiercely fondly foolishly fortunately frantically gently  gladly gracefully greedily happily hastily honestly hourly hungrily innocently inquisitively irritably joyously justly kindly lazily less loosely loudly madly merrily monthly mortally mysteriously nearly neatly nervously never noisily obediently obnoxiously often only painfully perfectly politely poorly powerfully promptly punctually quickly quietly rapidly rarely really recklessly regularly reluctantly repeatedly rightfully roughly rudely sadly safely seldom selfishly seriously shakily sharply shrilly shyly silently sleepily slowly smoothly softly solemnly sometimes soon speedily stealthily sternly successfully suddenly suspiciously swiftly tenderly tensely thoughtfully tightly tomorrow truthfully unexpectedly victoriously violently vivaciously warmly weakly wearily well wildly yearly}
 @adverbs += ['at midnight', 'willfully', 'indignantly', 'forever', 'weekly', 'at dawn', 'at once', 'tonight']
 
+# Mostly from http://www.keystage2literacy.co.uk/bossy-imperative-verbs.html
+@imperative_verbs = %w{shut fold open close mix turn pour fill put add chop slice serve spread get heat grill hold swim swing listen pick throw catch slide bake fetch roll jump hide crack write use draw paint set eat drink bite stick plug cook bring stop play buy shop explain tidy move switch improve sort fly flip shout whisper}
+
 @transitive_verbs = %w{brings gives lends offers passes plays reads sends sings teaches writes buys gets leaves makes owes pays promises refuses shows takes tells}
 
 @transitive_verbs_past_participle = %w{brought given leant offered passed played read sent sung taught written bought gotten left made owed paid promised refused shown taken told}
@@ -58,6 +61,10 @@ def intransitive_verb
   @intransitive_verbs.sample
 end
 
+def imperative_verb
+  @imperative_verbs.sample
+end
+
 def transitive_verb_past_participle
   result = @transitive_verbs_past_participle.sample
   if rand < 0.25
@@ -78,7 +85,8 @@ def codephrase
   # The NOUN VERBS ADVERB.
   codephrases << "The #{noun} #{intransitive_verb} #{adverb}."
   # In PLACE there is a NOUN that VERBS.
-  # IMPERATIVE VERB the ADJECTIVE NOUN.
+  # IMPERATIVE VERB the NOUN.
+  codephrases << "#{imperative_verb.capitalize} the #{noun}."
   # How is a NOUN like a NOUN? <— problem: article inflection (a/n)
 
   # CODEPHRASE I repeat CODEPHRASE
