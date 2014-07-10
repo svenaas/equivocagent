@@ -147,9 +147,9 @@ end
 
 def react_to_new_followers
   followers.reverse.each do |f|
-  # Try and follow follower
-  @client.follow(f)
-end
+    # Try and follow follower
+    @client.follow(f)
+  end
 end
 
 def replied_to?(tweet, my_tweets) 
@@ -214,7 +214,4 @@ elsif ARGV[0] == 'mentions'
   mentions.each {|m| puts "@#{m.user.username}: #{m.full_text} (#{m.created_at}"}
 else 
   usage
-end 
-
-#elsif ARGV[1] == 'run'
-#  run
+end
