@@ -130,22 +130,31 @@ end
 
 # Get the 20 most recent mentions, ordered from newest to oldest
 def mentions
-  @client.mentions_timeline
+  @client.mentions_timeline 
 end
 
 def react_to_new_mentions
-  new_mentions = mentions
-  # Get all my tweets since the oldest mention
-  my_tweets ||= @client.user_timeline(:since_id => new_mentions.last.id)
-  new_mentions.each do |m|
-    # Reply to mention unless this has already been done
-    unless replied_to?(m, my_tweets)
-      tweet_codephrase(m) 
-      sleep(rand(5...15))
+  begin
+    new_mentions = mentions
+    # Get all my tweets since the oldest mention
+    my_tweets ||= @client.user_timeline(:since_id => new_mentions.last.id)
+    new_mentions.each do |m|
+      # Reply to mention unless this has already been done
+      unless replied_to?(m, my_tweets)
+        tweet_codephrase(m) 
+        sleep(rand(5...15))
+      end
+      # Try and follow mentioner
+      @client.follow(m.user)
     end
-    # Try and follow mentioner
-    @client.follow(m.user)
+  rescue Twitter::Error::TooManyRequests => e
+    puts "Rate limit exception on #react_to_new_mentions"
+  rescue Twitter::Error::RequestTimeout => e
+    puts "Timeout on #react_to_new_mentions"
+  rescue Exception => e
+    puts "An unexpected exception occured on #react_to_new_mentions: #{e}"
   end
+
 end
 
 # Get the 20 newest followers, ordered from newest to oldest
@@ -154,9 +163,17 @@ def followers
 end
 
 def react_to_new_followers
-  followers.reverse.each do |f|
-    # Try and follow follower
-    @client.follow(f)
+  begin
+    followers.reverse.each do |f|
+      # Try and follow follower
+      @client.follow(f)
+    end
+  rescue Twitter::Error::TooManyRequests => e
+    puts "Rate limit exception on #react_to_new_followers"
+  rescue Twitter::Error::RequestTimeout => e
+    puts "Timeout on #react_to_new_followers"
+  rescue Exception => e
+    puts "An unexpected exception occured on #react_to_new_followers: #{e}"
   end
 end
 
@@ -180,8 +197,15 @@ def tweet_codephrase(in_reply_to = nil)
     @client.update status, options
     @tweets_sent += 1
     puts "Tweeted: #{status}"
+  rescue Twitter::Error::TooManyRequests => e
+    puts "Rate limit exception on #tweet_codephrase"
+    raise e
+  rescue Twitter::Error::RequestTimeout => e
+    puts "Timeout on #tweet_codephrase"
+    raise e
   rescue Exception => e
-    puts "An exception occured: #{e}"
+    puts "An unexpected exception occured on #tweet_codephrase: #{e}"
+    raise e
   end
 end
 
