@@ -144,8 +144,6 @@ def react_to_new_mentions
         tweet_codephrase(m) 
         sleep(rand(5...15))
       end
-      # Try and follow mentioner
-      @client.follow(m.user)
     end
   rescue Twitter::Error::TooManyRequests => e
     puts "Rate limit exception on #react_to_new_mentions"
@@ -155,26 +153,6 @@ def react_to_new_mentions
     puts "An unexpected exception occured on #react_to_new_mentions: #{e}"
   end
 
-end
-
-# Get the 20 newest followers, ordered from newest to oldest
-def followers
-  @client.followers.take(20)
-end
-
-def react_to_new_followers
-  begin
-    followers.reverse.each do |f|
-      # Try and follow follower
-      @client.follow(f)
-    end
-  rescue Twitter::Error::TooManyRequests => e
-    puts "Rate limit exception on #react_to_new_followers"
-  rescue Twitter::Error::RequestTimeout => e
-    puts "Timeout on #react_to_new_followers"
-  rescue Exception => e
-    puts "An unexpected exception occured on #react_to_new_followers: #{e}"
-  end
 end
 
 def replied_to?(tweet, my_tweets) 
@@ -211,7 +189,6 @@ end
 
 def run
   react_to_new_mentions
-  react_to_new_followers
   if @tweets_sent == 0 and rand < CHANCE_OF_TWEETING
     tweet_codephrase
   end
@@ -224,7 +201,6 @@ def usage
   puts "  ea.rb react      - react to new mentions (may post to Twitter)"
   puts "  ea.rb codephrase - generate a random codephrase"
   puts "  ea.rb location   - generate a random location"
-  puts "  ea.rb followers  - list 20 newest followers"
   puts "  ea.rb mentions   - list 20 newest mentions"
 end
 
@@ -240,8 +216,6 @@ elsif ARGV[0] == 'codephrase'
   puts codephrase
 elsif ARGV[0] == 'location'
   puts location.to_s
-elsif ARGV[0] == 'followers'
-  followers.each {|f| puts "@#{f.username}"}
 elsif ARGV[0] == 'mentions'
   mentions.each {|m| puts "@#{m.user.username}: #{m.full_text} (#{m.created_at}"}
 else 
