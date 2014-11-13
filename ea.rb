@@ -136,13 +136,18 @@ end
 def react_to_new_mentions
   begin
     new_mentions = mentions
-    # Get all my tweets since the oldest mention
+
+    # Get all my tweets since the oldest mention – NOTE: this only returns the last 20 tweets!
     my_tweets ||= @client.user_timeline(:since_id => new_mentions.last.id)
+
     new_mentions.each do |m|
-      # Reply to mention unless this has already been done
-      unless replied_to?(m, my_tweets)
-        tweet_codephrase(m) 
-        sleep(rand(5...15))
+      # Make sure the mention is new enough to compare to the tweets we retrieved
+      if m.created_at > my_tweets.last.created_at
+        # Reply to mention unless this has already been done
+        unless replied_to?(m, my_tweets)
+          tweet_codephrase(m) 
+          sleep(rand(5...15))
+        end
       end
     end
   rescue Twitter::Error::TooManyRequests => e
